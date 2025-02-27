@@ -1,6 +1,7 @@
 package com.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,17 +34,23 @@ public class Product {
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 	
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();
+	
 	public Product() {	
 		
 	}
 
-	public Product(Long ig, String name, String description, Double price, String imgURL) {
+	public Product(Long id, String name, String description, Double price, String imgURL, Set<Category> categories) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.imgURL = imgURL;
+		this.categories = categories;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -83,8 +91,13 @@ public class Product {
 	public void setImgURL(String imgURL) {
 		this.imgURL = imgURL;
 	}
+	
+	
+	public Set<OrderItem> getItems() {
+		return items;
+	}
 
-	public Set<Category> getCategories() {
-		return categories;
+	public List<Order> getOrders(){
+		return items.stream().map(x -> x.getOrder()).toList();
 	}
 }
