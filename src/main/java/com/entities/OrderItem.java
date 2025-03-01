@@ -1,5 +1,7 @@
 package com.entities;
 
+
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -57,8 +59,4 @@ public class OrderItem {
 		this.price = price;
 	}
 	
-	
-	
-	
-
 }
