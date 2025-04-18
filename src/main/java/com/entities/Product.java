@@ -2,6 +2,7 @@ package com.entities;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,7 +27,7 @@ public class Product {
 	@Column(columnDefinition = "TEXT")
 	private String description;
 	private Double price;
-	private String imgURL;
+	private String img_url;
 	
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
@@ -43,12 +44,12 @@ public class Product {
 		
 	}
 
-	public Product(Long id, String name, String description, Double price, String imgURL, Set<Category> categories) {
+	public Product(Long id, String name, String description, Double price, String img_url, Set<Category> categories) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		this.imgURL = imgURL;
+		this.img_url = img_url;
 		this.categories = categories;
 	}
 
@@ -85,13 +86,12 @@ public class Product {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-
-	public String getImgURL() {
-		return imgURL;
+	public String getImg_url() {
+		return img_url;
 	}
 
-	public void setImgURL(String imgURL) {
-		this.imgURL = imgURL;
+	public void setImg_url(String img_url) {
+		this.img_url = img_url;
 	}
 	
 	public Set<OrderItem> getItems() {
@@ -101,5 +101,23 @@ public class Product {
 	public List<Order> getOrders(){
 		return items.stream().map(x -> x.getOrder()).toList();
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		return Objects.equals(id, other.id);
+	}
+	
 	
 }
